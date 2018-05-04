@@ -39,16 +39,41 @@ bikedata183 = fread("201803_fordgobike_tripdata.csv", stringsAsFactors = F)
 
 #Combine all the csv files together
 bikedata <- rbindlist(lapply(c("2017-fordgobike-tripdata.csv","201801_fordgobike_tripdata.csv","201802_fordgobike_tripdata.csv","201803_fordgobike_tripdata.csv"),fread,stringsAsFactors = F))
+#Have the start and end times be read as dates.
 
-
-
-#Have the start and end times be read as dates. 
 bikedata$start_time <- ymd_hms(bikedata$start_time)
 bikedata$end_time <- ymd_hms(bikedata$end_time)
 
 
 #See the date range
 range(bikedata$start_time)
+
+```
+
+## bike data updated - Kannan
+```{r}
+#bike data :
+
+library(tidyr)
+
+bikedata17_612 = read.csv("2017-fordgobike-tripdata.csv")
+bikedata18_1 = read.csv("201801_fordgobike_tripdata.csv")
+bikedata18_2 = read.csv("201802_fordgobike_tripdata.csv")
+bikedata18_3 = read.csv("201803_fordgobike_tripdata.csv")
+
+data=rbind(bikedata17_612,bikedata18_1,bikedata18_2,bikedata18_3)
+
+finalbikedata = data%>%
+  separate(col= start_time,into = c("start_Time","Junk"),sep = 19,remove = T )
+
+finalbikedata = data%>%
+  separate(col= end_time,into = c("end_Time","Junk"),sep = 19,remove = T )
+
+finalbikedata$start_Time = ymd_hms(finalbikedata$start_Time)
+
+finalbikedata$end_Time = ymd_hms(finalbikedata$end_Time)
+
+
 ```
 
 ## Upload weather data from weatherunderground.com
